@@ -1,0 +1,64 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <script src="Scripts/jquery-2.1.3.intellisense.js"></script>
+    <script src="Scripts/jquery-2.1.3.min.js"></script>
+</head>
+<body>
+    <form id="frm">
+        <label id="lblTxt1">Textbox 1</label><input type="text" id="txt1" /><br /><br />
+        <label id="lblTxt2">Textbox 2</label><input type="text" id="txt2" /><br /><br />
+        <label id="lblTxt3">Textbox 3</label><input type="text" id="txt3" /><br /><br />
+        <label id="lblRdn">Radio</label><input type="radio" id="rdn1" name="rdn" value="Radio 1" /> Radio 1
+        <input type="radio" id="rdn2" name="rdn" value="Radio 2" /> Radio 2
+        <br /><br />
+        <label id="lblChk">CheckBox</label><input type="checkbox" id="chk1" name="chk" value="Checkbox 1" /> Checkbox 1
+        <input type="checkbox" id="chk2" name="chk" value="Checkbox 2" /> Checkbox 2
+        <input type="checkbox" id="chk3" name="chk" value="Checkbox 3" /> Checkbox 3
+        <input type="checkbox" id="chk4" name="chk" value="Checkbox 4" /> Checkbox 4
+        <br /><br />
+        <label id="lblDdl">Dropdownlist</label>
+        <select id="chk">
+            <option>Chk 1</option>
+            <option>Chk 2</option>
+            <option>Chk 3</option>
+        </select>
+        <br /><br />
+        <input type="submit" />
+    </form>
+
+
+    <script>
+        $(document).ready(function () {
+            $('#frm').on('submit', function () {
+                $(this).children().each(function () {
+                    if (!($(this).is('input[type=submit]'))) {
+                        ProcessElement($(this));
+                    }
+
+                })
+            });
+        });
+
+        function ProcessElement(obj) {
+            if (obj.is('label')) {
+                //alert('Object is label');
+                alert(obj.html());
+            }
+            else if (obj.is('input[type=text]')) {
+                //alert('Object is text');
+            }
+            else if (obj.is('input[type=radio]')) {
+                //alert('Object is Radio');
+            }
+            else if (obj.is('input[type=checkbox]')) {
+                //alert('Object is CheckBox');
+            }
+            else if (obj.is('select')) {
+                //alert('Object is DropDownList');
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,160 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Drag and Drop</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/themes/smoothness/jquery-ui.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js"></script>
+    <script src="Scripts/jquery-ui-1.11.3.min.js"></script>
+    <style>
+        #divControls {
+            float: left;
+            width: 300px;
+            border: 2px solid black;
+        }
+
+        #divFormPanel,#divFinalPanel,#divCodePreview {
+            width: 800px;
+            border: 2px solid black;
+            float: left;
+        }
+    </style>
+</head>
+<body>
+    <div id="divControls">
+        <div id="divTextboxControl" draggable="true">
+            <label>TextBox</label>
+            <input type="text" id="txt" />
+        </div>
+        <div id="divDropdownlistControl">
+            <label>Dropdownlist</label>
+            <select id="ddl">
+                <option>Option 1</option>
+                <option>Option 2</option>
+            </select>
+        </div>
+        <div id="divRadioControl">
+            <label>Radio</label>
+            <input type="radio" name="radioButton" checked />Radio 1
+            <input type="radio" name="radioButton" />Radio 2
+        </div>
+    </div>
+    <div id="divFormPanel">
+        DropHere
+    </div>
+    <br />
+    <div>
+        <input type="button" id="btnPreview" value="Preview" />
+    </div>
+    <br />
+    <br />
+    <br />
+    <div id="divFinalPanel">
+        Final Content
+    </div>
+    <br />
+    <br />
+    <br />
+    <div id="divCodePreview">
+        Code Preview
+    </div>
+    <div id="dialog" title="Basic dialog">
+        <p>This is the default dialog which is useful for displaying information. The dialog window can be moved, resized and closed with the 'x' icon.</p>
+    </div>
+    
+
+    <script>
+        $(document).ready(function () {
+            $("#divControls").children("div").each(function () {
+                MakeDivDraggable(this);
+            })
+
+            $("#dialog").dialog({
+                autoOpen: false,
+                buttons: {
+                    "Save": function () {
+                        alert("Save");
+                    },
+                    "Cancel": function () {
+                        $(this).dialog("close");
+                    }
+                }
+            });
+
+            $("#btnPreview").on("click", PreviewData)
+
+            $("#divFormPanel").droppable({
+                accept: ":not(.ui-sortable-helper)", //Important line for the sorting properly
+                drop: function (event, ui) {
+                    var element = $(ui.draggable).clone();
+                    $(this).append(element);
+                    AddPopupEvent(element);
+                }
+            }).sortable({
+                cursor: "move",
+            });
+        });
+
+        function AddPopupEvent(dragElement) {
+            dragElement.on("click", function () {
+                $("#dialog").html();
+                if (dragElement.find("input[type=text]").length > 0) {
+                    var returnHtml = CreateTextBoxProperties(dragElement);
+                    $("#dialog").html(returnHtml);
+                }
+                else if (dragElement.find("input[type=password]").length > 0) {
+                    $("#dialog").html("Password");
+                }
+                else if (dragElement.find("input[type=radio]").length > 0) {
+                    var htmlProperty = $("#divRadioProperty").html();
+                    $("#dialog").html(htmlProperty);
+                }
+                else if (dragElement.find("input[type=checkbox]").length > 0) {
+                    $("#dialog").html("Checkbox");
+                }
+                else if (dragElement.find("select").length > 0) {
+                    $("#dialog").html("Dropdownlist");
+                }
+
+                //$("#dialog").append(dragElement.html());
+
+                $("#dialog").dialog("open");
+            });
+        }
+
+        function CreateTextBoxProperties(obj) {
+            var returnHtml = document.createElement("div");
+            returnHtml.id = "divTextBoxProperty";
+            var label = document.createElement("label");
+            label.id = "lblName";
+            label.innerHTML = "Name"
+            var txt = document.createElement("input");
+            txt.type = "text";
+            txt.id = "txtName";
+            returnHtml.appendChild(label);
+            returnHtml.appendChild(txt);
+            return returnHtml.innerHTML;
+        }
+
+        function PreviewData() {
+            $("#divFinalPanel").html($("#divFormPanel").html());
+            $("#divCodePreview").text($("#divFormPanel").html());
+        }
+
+        function MakeDivDraggable(divControl) {
+            $(divControl).draggable({
+                helper: "clone",
+                containment: '#divFormPanel',
+                start: function (event, ui) {
+
+                },
+                stop: function (event, ui) {
+
+                }
+            });
+        }
+
+
+    </script>
+</body>
+</html>
