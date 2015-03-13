@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>Drag and Drop</title>
@@ -13,7 +13,7 @@
             border: 2px solid black;
         }
 
-        #divFormPanel,#divFinalPanel,#divCodePreview {
+        #divFormPanel, #divFinalPanel, #divCodePreview {
             width: 800px;
             border: 2px solid black;
             float: left;
@@ -23,7 +23,7 @@
 <body>
     <div id="divControls">
         <div id="divTextboxControl" draggable="true">
-            <label>TextBox</label>
+            <label id="lblTextbox">TextBox</label>
             <input type="text" id="txt" />
         </div>
         <div id="divDropdownlistControl">
@@ -61,7 +61,7 @@
     <div id="dialog" title="Basic dialog">
         <p>This is the default dialog which is useful for displaying information. The dialog window can be moved, resized and closed with the 'x' icon.</p>
     </div>
-    
+
 
     <script>
         $(document).ready(function () {
@@ -73,7 +73,8 @@
                 autoOpen: false,
                 buttons: {
                     "Save": function () {
-                        alert("Save");
+                        $("#divFormPanel").find("#" + $(this).find("input[type=hidden]").attr("id")).html($(this).find("input[type=text]").val());
+                        $(this).dialog("close");
                     },
                     "Cancel": function () {
                         $(this).dialog("close");
@@ -131,7 +132,13 @@
             var txt = document.createElement("input");
             txt.type = "text";
             txt.id = "txtName";
+            var hidden = document.createElement("input");
+            hidden.type = "hidden";
+            hidden.id = obj.find("label").attr("id");
+            //alert(obj.find("label").attr("id"));
+            //hidden.innerHTML = obj.find("label").attr("id");
             returnHtml.appendChild(label);
+            returnHtml.appendChild(hidden);
             returnHtml.appendChild(txt);
             return returnHtml.innerHTML;
         }
