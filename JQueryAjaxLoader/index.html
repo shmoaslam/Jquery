@@ -1,0 +1,78 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Ajax Loader</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <style>
+        #divLoading {
+            display: none;
+        }
+
+            #divLoading.show {
+                display: block;
+                position: fixed;
+                z-index: 100;
+                background-image: url('http://loadinggif.com/images/image-selection/3.gif');
+                background-color: #666;
+                opacity: 0.4;
+                background-repeat: no-repeat;
+                background-position: center;
+                left: 0;
+                bottom: 0;
+                right: 0;
+                top: 0;
+            }
+
+        #loadinggif.show {
+            left: 50%;
+            top: 50%;
+            position: absolute;
+            z-index: 101;
+            width: 32px;
+            height: 32px;
+            margin-left: -16px;
+            margin-top: -16px;
+        }
+
+        div.content {
+            /*width: 1000px;
+            height: 1000px;*/
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        Long Content Here
+        <br />
+        Click to view loading image.
+    </div>
+    <div id="divLoading">
+    </div>
+    <script>
+        $(document).on({
+            ajaxStart: function () { $("div#divLoading").addClass("show"); },
+            ajaxStop: function () { $("div#divLoading").removeClass("show"); }
+        });
+
+
+        $(document).ready(function () {
+            $("div.content").click(function () {
+                $.ajax({
+                    url: "Data.html",
+                    dataType: "html",
+                    data:"application/html",
+                    success: function (data) {
+                        $('div.content').html(data);
+                    },
+                    error: function (data) {
+                        alert(data);
+                    }
+
+                });
+            });
+        });
+    </script>
+</body>
+</html>
